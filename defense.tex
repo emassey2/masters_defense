@@ -1,0 +1,762 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{ragged2e}  % `\justifying` text
+\usepackage{booktabs}  % Tables
+\usepackage{tabularx}
+\usepackage{tikz}      % Diagrams
+\usetikzlibrary{calc, shapes, backgrounds}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{url}       % `\url
+\usepackage{listings}  % Code listings
+\usepackage[T1]{fontenc}
+
+
+\usepackage{theme/beamerthemehbrs}
+
+\author[Ethan Oswald Massey]{Ethan Oswald Massey}
+\title{Estimating Confidence in Spatio-Temporal Models}
+\institute[HBRS]{Hochschule Bonn-Rhein-Sieg}
+\date{2020-00-00}
+%\subject{Test beamer}
+
+\thirdpartylogo{images/ropod.png}
+
+
+\begin{document}
+{
+\begin{frame}
+\titlepage
+\vspace{5mm}
+
+Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. Sc. Argentina Ortega S\'{a}inz
+\end{frame}
+}
+
+\begin{frame}[t]{Uses of Spatio-Temporal Models}
+  \begin{itemize}
+    \setlength\itemsep{1em}
+    \item Describes how an environment changes with respect to time
+    \item Most useful when changes are periodic or modelable
+    \item Human occupied environments are often suitable
+    \item Enable improved planning, navigation, and scheduling for ROPOD
+  \end{itemize}
+
+  \begin{block}{Desired Predictions}
+    \begin{itemize}
+    \item Travel Time
+      \begin{itemize}
+        \item Elevators
+        \item Hallways
+      \end{itemize}
+    \item Dynamic Obstacles
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}[t]{Previous Work}
+
+  \begin{itemize}
+    \item \textbf{Basic discussion about space and time complexity}
+      \begin{itemize}
+        \item \scriptsize FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments \cite{Krajnik2015} \normalsize
+        \item Comparison with Gaussian Mixture Models
+      \end{itemize}
+
+
+    \item \textbf{Internal comparison based on prediction accuracy}
+      \begin{itemize}
+        \item \scriptsize Occupancy Grid Models for Robot Mapping in Changing Environments \cite{Meyer-Delius2012} \normalsize
+      \end{itemize}
+
+    \item \textbf{Discussion of prediction accuracy and representation}
+      \begin{itemize}
+        \item \scriptsize A Poisson-Spectral Model for Modelling Temporal Patterns in Human Data Observed by a Robot \cite{Jovan2016} \normalsize
+      \end{itemize}
+  \end{itemize}
+
+  \begin{block}{Limitations}
+    \begin{itemize}
+      \item Little to no comparison with other existing methods
+      \item Limited in scope and depth
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{Benefits of Selecting the Best Model}
+  \centering
+    Improved predictions
+    \\
+    $\downarrow$
+    \\
+    Improves path planning
+    \\
+    $\downarrow$
+    \\
+    Decreases travel time
+    \\
+    $\downarrow$
+    \\
+    Increases work throughput
+    \\
+    $\downarrow$
+    \\
+    Saves time \& money
+    \\
+\end{frame}
+
+
+
+\begin{frame}[t]{Establishing Criteria for Comparison}
+  \framesubtitle{Characteristic Information}
+  \begin{itemize}
+    \item \textbf{Computational Complexity}
+      \begin{itemize}
+        \item Theoretical space and time complexity (Big O)
+      \end{itemize}
+
+    \item \textbf{Efficiency of Data Storage}
+      \begin{itemize}
+        \item Space taken to store observations and corresponding fidelity
+      \end{itemize}
+
+    \item \textbf{Learning Method}
+      \begin{itemize}
+        \item e.g. neural net, stochastic gradient descent, etc\dots
+      \end{itemize}
+
+    \item \textbf{Online vs Offline}
+      \begin{itemize}
+        \item static vs dynamic dataset
+      \end{itemize}
+
+    \item \textbf{Map Type Dependency}
+      \begin{itemize}
+        \item e.g. methods only works with 2D occupancy girds
+      \end{itemize}
+
+    \item \textbf{Limitations on Predictions}
+      \begin{itemize}
+        \item Classification restrictions (e.g. binary vs non-binary)
+        \item Historical and longterm future predictions
+      \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}[t]{Methodology}
+  \framesubtitle{What \emph{is} Confidence?}
+
+  \begin{itemize}
+    %\setlength\itemsep{1em}
+    \item “The feeling or belief that one can have faith in or rely on someone or something.” \cite{Confidence2019}
+    \item Epistemic vs Aleatoric Uncertainty
+    \item Inherent vs Introduced
+    \item Predicated on data quantity and quality
+  \end{itemize}
+
+  \begin{block}{Key Concepts for this Work}
+    \begin{itemize}
+      \item Confidence $\simeq$ Uncertainty \cite{Geifman2018}
+      \item Relies on historical knowledge/experience
+      \item Driven by knowledge of spatio-temporal implementation
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Methodology}
+  \framesubtitle{Conceptual Approach to Confidence Estimation Models}
+  \begin{itemize}
+    \setlength\itemsep{1em}
+  \item \textbf{Black Box}
+      \begin{itemize}
+        \item No assumptions possible
+        \item Wide-reaching application
+        \item Simplistic approach and results
+      \end{itemize}
+
+    \item \textbf{Grey Box}
+      \begin{itemize}
+        \item Some implementation knowledge needed
+        \item Wide range of possible designs
+        \item May require tuning
+      \end{itemize}
+
+    \item \textbf{White Box}
+      \begin{itemize}
+        \item Internal access and comprehension required
+        \item Extremly specific
+        \item Posibility for most precise and accurate results
+      \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t]{Implementation Details}
+  \framesubtitle{Use Case - ROPOD}
+  \begin{columns}[t]
+
+    \column{.5\textwidth}
+    \begin{block}{What is ROPOD?}
+      \begin{itemize}
+        \item Autonomous multi-robot system
+        \item Transports hospital beds \& supplies
+        \item Deployment in human-shared environments
+      \end{itemize}
+    \end{block}
+
+    \column{.5\textwidth}
+    \begin{block}{Why ROPOD?}
+      \begin{itemize}
+        \item Real-world context
+        \item Extensive opportunity for data collection
+        \item Environmental representation
+        \item Potential synergy with temporal planning
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[t]{Implementation Details}
+  \framesubtitle{Spatio-Temporal Model - Hypertime \cite{Krajnik2018}}
+  \begin{columns}[t]
+
+    \column{.5\textwidth}
+    \begin{block}{What is Hypertime?}
+      \begin{itemize}
+        \item Extension of FreMEn \cite{Krajnik2015}
+        \item Predicts environmental behavior or changes
+        \item Binary predictions with probability
+        \item Non-binary predictions with no probability
+      \end{itemize}
+    \end{block}
+
+    \column{.5\textwidth}
+    \begin{block}{Why Hypertime?}
+      \begin{itemize}
+        \item Excellent fit for ROPOD \cite{Massey2019}
+        \item Fully accessible and comprehensible
+        \item Lacks confidence estimates
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[t]{Implementation Details}
+  \framesubtitle{Hypertime Background and Modification}
+    \includegraphics[width=0.80\columnwidth]{images/hypertime_clustering.png}
+
+    \begin{block}{Hypertime Overview}
+      \begin{itemize}
+        \item Multiple cluster - Gaussian distributions
+        \item Frequency-based representation and \& dimensionality expansion
+        \item Multiple methods for predictions
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Selecting Methods for ROPOD}
+  \framesubtitle{Narrowing the Field}
+  \begin{itemize}
+    \item Moderate computational and storage complexity
+    \item Map independent
+    \item Preference towards no prediction limitations
+    \item Variety of implementation complexities
+    \item Generic field of application
+  \end{itemize}
+
+    \begin{block}{Selected Methods}
+      \begin{itemize}
+        \item Dynamic Multi-Map (DMM) \cite{Biber2005}
+        \item Frequency Map Enhancement (FreMEn) \cite{Krajnik2015}
+        \item Hypertime \cite{Krajnik2018}
+        \item + Gaussian Mixture Models (GMM) \cite{Krajnik2015}
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[t]{Overview of Selected Methods}
+  \begin{itemize}
+    \small
+    \item GMM - Mixture of Gaussian models
+    \item DMM - Collection of multiple maps (selection vs combination)
+    \item FreMEn - Application of Fourier Transform
+    \item Hypertime - FreMEn + temporal folding
+    \normalsize
+  \end{itemize}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                          & GMM     & DMM    & FreMEn  & Hypertime      \\ \hline
+Additional Complexity     & Linear  & Linear & Linear  & $\sim$Linear \\ \hline
+Map Independent           & \checkmark  & \checkmark & \checkmark  & \checkmark          \\ \hline
+Limitations               & binary  & \checkmark & binary  & \checkmark          \\ \hline
+Implementation Complexity & 1       & 1      & 2       & 3              \\ \hline
+Field Applicable          & \checkmark  & \checkmark & \checkmark  & \checkmark \\ \hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+
+\begin{frame}[t]{Experimental Overview}
+  \begin{itemize}
+    \item Three simulated experiments
+    \begin{enumerate}
+      \item Doors\hspace{12pt}[Binary Predictions]
+      \item Map\hspace{19pt}[Navigation using Binary Predictions]
+      \item Elevator [Non-Binary Predictions]
+    \end{enumerate}
+
+    \setlength\itemsep{.5em}
+    \item Assume all information is known, static, and accurate
+    \item Observations are made every 15 minutes for one month
+    \item Training is done over one month
+    \begin{itemize}
+      \item A python script is used for data generation
+    \end{itemize}
+    \item Predictions are done on a new month
+    \begin{itemize}
+      \item This month is generated using the same process
+    \end{itemize}
+  \item A focus is placed on accuracy and resource usage
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Doors Experiment}
+  \framesubtitle{Setup}
+  \begin{itemize}
+    \item Designed to encapsulate and test periodic binary behaviors
+    \item Consists of three doors
+    \setlength\itemsep{1em}
+  \item \textbf{A - Office/Work hours door}
+    \begin{itemize}
+      \item Usually open 9-5 except for lunch hours
+    \end{itemize}
+  \item \textbf{B - Office/Work hours door + noise and non-weekly behavior}
+    \begin{itemize}
+      \item Always open outside of work hours
+      \item 50\% chance of being open during the work day
+      \item Closed every third day all day
+    \end{itemize}
+  \item \textbf{C - Long-term change}
+    \begin{itemize}
+      \item Always open first 3 weeks
+      \item Closed permanently after that
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Doors Experiment}
+  \framesubtitle{Results: A - 9-5 Office Hours}
+
+  {\includegraphics[width = 4.5in]{images/results/Future_Predictions_on_door_A.png}}
+
+  \begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+      \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
+        Prediction Accuracy             & 77.15\% & 79.43\%  & 87.08\% & 88.87\%   \\ \hline
+        Computation Time (Milliseconds) & 610     & 50       & 70      & 5630      \\ \hline
+        Memory Usage (KB)               & 31036   & 34968    & 34656   & 37192     \\ \hline
+      \end{tabular}%
+    }
+  \end{table}
+
+\end{frame}
+
+\begin{frame}[t]{Doors Experiment}
+  \framesubtitle{Results: C - Permanent Change}
+  {\includegraphics[width = 4.5in]{images/results/Future_Predictions_on_door_C.png}}
+
+  \begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+      \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
+        Prediction Accuracy             & 31.82\% & 14.58\%  & 00.00\% & 00.00\%   \\ \hline
+        Computation Time (Milliseconds) & 570     & 60       & 70      & 530       \\ \hline
+        Memory Usage (KB)               & 31224   & 35004    & 34976   & 37208     \\ \hline
+      \end{tabular}%
+    }
+  \end{table}
+
+\end{frame}
+
+
+\begin{frame}[t]{Congested Hallways}
+  \framesubtitle{Navigation with a Graph}
+  \begin{itemize}
+    \setlength\itemsep{.5em}
+    \item Uses binary predictions for path planning
+    \item Goal is to move from Start to Finish during different times
+    \item Consists of 7 nodes with dynamic behavior
+    \begin{itemize}
+      \item 2 Meal Nodes - three times a day
+      \item 1 Laundry Node - once per day
+      \item 2 Delivery Nodes - twice per week
+      \item 2 Trash Nodes - once every three days
+    \end{itemize}
+  \item Path planning done with NetworkX
+  \item Metrics
+  \begin{itemize}
+    \item Hard vs Soft Errors
+    \item Additional Travel Distance
+  \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Congested Hallways}
+  \vspace*{-2cm}
+
+
+  \begin{figure}
+    \includegraphics[width=2.5in]{images/results/overlay.png}
+    %\caption{Layout}
+    \vspace*{-2.5cm} % remove spacing between figure and caption
+  \end{figure}
+
+  \vspace*{-.75cm} % remove spacing between figures
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \includegraphics[width=1.75in]{images/results/Full_Hospital.png}
+        \vspace*{-0.3cm}
+        %\caption{Example B}
+      \end{figure}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \includegraphics[width=1.75in]{images/results/Empty_Hospital.png}
+        \vspace*{-0.3cm}
+        %\caption{Example C}
+      \end{figure}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}[t]{Congested Hallways}
+  \framesubtitle{Overall Results}
+
+  \vspace*{-0.5cm}
+  \begin{table}[htb!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+      \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
+        Number of Hard Errors              & 1790   & 2418   & 1488   & 1488 \\ \hline
+        Number of Soft Errors              & 444    & 62     & 80     & 80   \\ \hline
+        Average Additional Cells Traversed & 5.74   & 6.34   & 3.12   & 3.12 \\ \hline
+        Total Time Spent Planning (Milliseconds)     & 3650   & 360    & 440    & 13780\\ \hline
+        Maximum Memory Usage (KB)          & 31384  & 35660  & 35588  & 38372\\ \hline
+      \end{tabular}%
+    }
+    \caption{Future Path Planning Results}
+    \label{table:Future_Path_Planning_Results}
+
+    \begin{center}
+      \begin{figure}[!hp]
+        \begin{tabular}{cc}
+          {\includegraphics[width = 3.75in]{images/results/future_average_distance_from_optimal_path_during_planning.png}} \\
+        \end{tabular}
+      \end{figure}
+    \end{center}
+  \end{table}
+
+\end{frame}
+
+
+\begin{frame}[t]{Congested Hallways}
+\framesubtitle{Predictions on High and Low Frequency Events}
+  \vspace*{-0.5cm}
+\begin{figure}[!Hp]
+  \begin{tabular}{cc}
+    {\includegraphics[width = 3.5in]{images/results/Future_hallway_T1_HyT-EM.png}} \\
+    {\includegraphics[width = 3.5in]{images/results/Future_hallway_M0_HyT-EM.png}} \\
+  \end{tabular}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}[t]{Busy Elevator}
+  \framesubtitle{Non-Binary Predictions}
+
+  \begin{itemize}
+    \setlength\itemsep{.3em}
+  \item Elevator wait times vary throughout the day
+  \item How far in advance should one call the elevator
+  \item Test of non-binary prediction
+  \begin{itemize}
+    \item Binary classifiers used a fixed threshold for prediction
+    \item The upper and lower averages are used for predictions
+  \end{itemize}
+
+  \begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{images/Elevator_Data_Example_Month.png}
+  \end{figure}
+
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t]{Busy Elevator}
+ % \framesubtitle{Results}
+
+
+
+  %\begin{figure}[!Hp]
+  %  \begin{tabular}{cc}
+  %    {\includegraphics[width = 4.5in]{images/results/Future_Predictions_on_Elevator_Data.png}}
+  %    {\includegraphics[width = 3in]{images/results/Future_elevator_FreMEn.png}}
+  %    {\includegraphics[width = 3in]{images/results/Future_elevator_HyT-EM.png}}
+  %  \end{tabular}
+  %\end{figure}
+
+
+  \vspace*{-.75cm}
+
+
+\begin{table}[h!]
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|l|l|l|}
+      \hline
+      & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
+      Average Additional Wait Time (Seconds)         & 3.06    & 3.25     & 2.12    & 1.92      \\ \hline
+      Computation Time (Milliseconds)                       & 610     & 60       & 70      & 7690      \\ \hline
+      Memory Usage (KB)                                     & 31092   & 34636    & 34672   & 67788     \\ \hline
+    \end{tabular}%
+  }
+  \caption{Elevator Wait Time Overview}
+  \label{table:Elevator_Wait_Time_Overview}
+\end{table}
+
+
+  \begin{figure}
+    \vspace*{-1cm}
+    \hspace*{-1cm}
+    {\includegraphics[width = 5in]{images/results/Future_Predictions_on_Elevator_Data.png}}
+    %\caption{Layout}
+  \end{figure}
+
+\end{frame}
+
+
+\begin{frame}[t]{Busy Elevator}
+ \framesubtitle{Binary vs Non-Binary Predictions}
+
+ \vspace*{-1.6cm}
+ \hspace*{-1.0cm}
+  \begin{figure}[!Hp]
+    \begin{tabular}{cc}
+      {\includegraphics[width = 4.25in]{images/results/Future_elevator_FreMEn.png}} \\
+      {\includegraphics[width = 4.25in]{images/results/Future_elevator_HyT-EM.png}}
+    \end{tabular}
+  \end{figure}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Experiment Conclusions}
+  \framesubtitle{Data Grouping Techniques}
+  \vspace*{-.25cm}
+  \setlength\itemsep{1.25em}
+
+  \begin{itemize}
+    \item \textbf{Black Box - General Grouping}
+      \begin{itemize}
+        \item Never provides invalid predictions
+        \item High accuracy with large bounds
+      \end{itemize}
+
+    \item \textbf{Grey Box - Temporal Grouping}
+      \begin{itemize}
+        \item Decent overall performance
+        \item Susceptible to invalid predictions with limited data
+      \end{itemize}
+
+    \item \textbf{White Box - Hypertime Cluster Grouping}
+      \begin{itemize}
+        \item Best all around performance
+        \item Rarely if ever susceptible to invalid predictions
+        \item Groupings limited to the number of internal clusters
+      \end{itemize}
+
+    \item \textbf{White X Grey Box - Combined Grouping}
+      \begin{itemize}
+        \item Requires extremely large datasets
+        \item Tends towards being overly specific
+        \item Performance closest to the lowest of the combined models
+      \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t]{Experiment Conclusions}
+  \framesubtitle{Confidence Estimating Techniques}
+  \vspace*{-.25cm}
+  \setlength\itemsep{1.25em}
+
+  \begin{itemize}
+    \item \textbf{Confidence Intervals}
+      \begin{itemize}
+        \item Describes general trend of behaviors
+        \item Smaller bounds at the cost of accuracy
+        \item Best fit for models representing discrete changes
+      \end{itemize}
+
+    \item \textbf{2$\sigma$}
+      \begin{itemize}
+        \item Larger more accurate bounds
+        \item Better encapsulation of environmental variance
+      \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Recommendations for ROPOD}
+  \framesubtitle{Hypertime with Caveats}
+  \vspace*{-.25cm}
+
+  \begin{itemize}
+    \item \textbf{Data Grouping - White Box/Hypertime Clusters}
+      \begin{itemize}
+        \item Avoids issues related to small datasets
+        \item Groups and generalizes underlying behaviors well
+        \item Multi-model fusion of also of potential interest
+      \end{itemize}
+
+    \item \textbf{Confidence Estimates - 2$\sigma$}
+      \begin{itemize}
+        \item Best for generalizing dynamic range of behaviors
+      \end{itemize}
+
+    \item \textbf{Implementation}
+      \begin{itemize}
+        \item Collect data as often as possible
+        \item Storage of spatio-temporal data on central server
+        \item Docker container of quick deployment
+        \item Trainings overnight every week or so
+      \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t]{Contributions}
+
+  \begin{itemize}
+    \setlength\itemsep{1em}
+        \item Presented methodology for developing confidence estimation techniques for spatio-temporal models
+
+        \item Introduced a novel prediction method for Hypertime
+
+        \item Provided new real-world datasets with varying noise and data density
+
+        \item Designed and evaluated multiple confidence estimation for Hypertime
+
+        \item Demonstrated multi-model prediction fusion
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t]{Future Work}
+
+  \begin{itemize}
+    \setlength\itemsep{1em}
+      \item Fusion of multiple different model types
+      \item Investigation into other data grouping and confidence estimate techniques
+      \item Differentiate between large bounds from lack of data and actual behaviors
+      \item Leverage confidence estimates to know when and where to explore
+      \item Further data visualization for increased prediction comprehension
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+
+  \centering \huge
+  \emph{Thank You!} \\
+  \vspace*{1cm}
+  \large
+  \emph{Any Questions\textbf{?}}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Bibliography}
+  \begin{thebibliography}{9}
+    \bibitem{Krajnik2015}
+        \emph{FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments}
+        T. Krajník, J. Fentanes, J. Santos, \& T. Duckett,
+        ICRA Workshop on Visual Place Recognition in Changing Environments
+        2015
+      \bibitem{Krajnik2018}
+        \emph{Warped Hypertime Representations for Long-term Autonomy of Mobile Robots},
+        T. Krajnik, T. Vintr, S. Molina, J.P. Fentanes, G. Cielniak, \& T. Duckett,
+        2018
+      \bibitem{Massey2019}
+        \emph{Comparative Analysis of Techniques for Spatio-Temporal World Modeling},
+        E.O. Massey, E. Prassler, A.O. S{\'{a}}inz, \& S. Blumenthal,
+        2019
+      \bibitem{Confidence2019}
+        \emph{Oxford University Press (OUP)},
+        Lexico.com,
+        2019
+      \bibitem{Geifman2018}
+        \emph{Bias-Reduced Uncertainty Estimation for Deep Neural Classifiers},
+        Y. Geifman, G. Uziel, R. El-Yaniv,
+        2018
+
+  \end{thebibliography}
+\end{frame}
+
+
+
+
+\end{document}
