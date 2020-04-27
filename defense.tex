@@ -61,31 +61,28 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
 
 
-\begin{frame}[t]{Previous Work}
+\begin{frame}[t]{State-of-the-Art}
 
   \begin{itemize}
-    \item \textbf{Basic discussion about space and time complexity}
+  \setlength\itemsep{1.5em}
+    \item \textbf{(Binary) State Probability Estimation}
       \begin{itemize}
-        \item \scriptsize FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments \cite{Krajnik2015} \normalsize
-        \item Comparison with Gaussian Mixture Models
+        \item \scriptsize FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments \cite{Krajnik2015}
+        \item \scriptsize Variants of Hypertime \cite{Krajnik2018} \normalsize
       \end{itemize}
 
-
-    \item \textbf{Internal comparison based on prediction accuracy}
+    \item \textbf{Possible Applications}
       \begin{itemize}
-        \item \scriptsize Occupancy Grid Models for Robot Mapping in Changing Environments \cite{Meyer-Delius2012} \normalsize
-      \end{itemize}
-
-    \item \textbf{Discussion of prediction accuracy and representation}
-      \begin{itemize}
-        \item \scriptsize A Poisson-Spectral Model for Modelling Temporal Patterns in Human Data Observed by a Robot \cite{Jovan2016} \normalsize
+        \item Directed \& Informed Exploration \cite{strands2017}
+        \item Temporal Planning \cite{dream2019}
       \end{itemize}
   \end{itemize}
 
+  \vspace*{0.50cm}
   \begin{block}{Limitations}
     \begin{itemize}
-      \item Little to no comparison with other existing methods
-      \item Limited in scope and depth
+      \item Many spatio-temporal models but few can estimate confidence
+      \item FreMEn only cannot provide travel time or similar estimates
     \end{itemize}
   \end{block}
 
@@ -324,18 +321,18 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
 
 \begin{frame}[t]{Elevator Dataset}
-  %{\includegraphics[width = 3.6in]{images/data_overview/elevator_dataset_overview.png}}
-  \vspace*{0.40cm}
-  {\includegraphics[width = 4.5in]{images/data_overview/elevator_dataset_overview.png}}
-   % \vspace*{-0.45cm}
+  \centering
+  \vspace*{-0.33cm}
+  {\includegraphics[width=3.2in]{images/data_overview/elevator_dataset_overview.png}}
+  \vspace*{-0.20cm}
 
-  %\begin{block}{Key Properties}
-  %  \begin{itemize}
-  %    \item Perfect Knowledge
-  %    \item High Volume
-  %    \item Low Noise
-  %  \end{itemize}
-  %\end{block}
+  \begin{block}{Key Properties}
+    \begin{itemize}
+      \item Perfect Knowledge
+      \item High Volume - 30,000 data points (Sparse Version - 135)
+      \item Low Noise/Outliers
+    \end{itemize}
+  \end{block}
 
 \end{frame}
 
@@ -387,6 +384,8 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
 
 \begin{frame}[t]{Hypertime Parameter Selection}
+    \centering
+    \vspace*{-0.25cm}
     {\includegraphics[width = 3.6in]{images/varying_clusters.png}}
     \vspace*{-0.45cm}
 
@@ -402,7 +401,7 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
 
 
-\begin{frame}[t]{Elevator Dataset}
+\begin{frame}[t]{Elevator Dataset Experiment}
   \framesubtitle{Performance Under Optimal Conditions}
   \begin{itemize}
     %\item Determine optimal Hypertime parameters
@@ -684,8 +683,8 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
 
 
-\begin{frame}[t]{Complete Elevator Dataset}
-  \framesubtitle{Inavlid Predictions}
+\begin{frame}[t]{Sprase Elevator Dataset}
+  \framesubtitle{Invalid Predictions}
 
   %\vspace*{-0.9cm}
   {\includegraphics[width = 4.5in]{images/elevator/two_sigma_grey_box_model_predictions_for_sparse_elevator_dataset.png}}
@@ -694,205 +693,261 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
 
 
-\begin{frame}[t]{Doors Experiment}
-  \framesubtitle{Results: C - Permanent Change}
-  {\includegraphics[width = 4.5in]{images/RMSE_for_All_Parameter_Configurations.png}}
-
-  \begin{table}[h!]
-    \centering
-    \resizebox{\textwidth}{!}{%
-      \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
-        Prediction Accuracy             & 31.82\% & 14.58\%  & 00.00\% & 00.00\%   \\ \hline
-        Computation Time (Milliseconds) & 570     & 60       & 70      & 530       \\ \hline
-        Memory Usage (KB)               & 31224   & 35004    & 34976   & 37208     \\ \hline
-      \end{tabular}%
-    }
-  \end{table}
-
-\end{frame}
+%\begin{frame}[t]{Hallway Dataset}
+%  \framesubtitle{Predicting Travel Time}
+%  \centering
+%  %\vspace*{-0.33cm}
+%  \includegraphics[width=4.0cm]{images/ROPOD_nodes.png}
+%  %\vspace*{-0.20cm}
+%
+%  \begin{block}{Key Properties}
+%    \begin{itemize}
+%      \item Limited Volume
+%      \item Noisy Data
+%    \end{itemize}
+%  \end{block}
+%
+%\end{frame}
 
 
-\begin{frame}[t]{Congested Hallways}
-  \framesubtitle{Navigation with a Graph}
+
+\begin{frame}[t]{Hallway Dataset Experiment}
+  \framesubtitle{Performance Under Sub-Optimal Conditions}
+
+  \centering
+  %\vspace*{-0.33cm}
+  \includegraphics[width=4.0cm]{images/ROPOD_nodes.png}
+
   \begin{itemize}
-    \setlength\itemsep{.5em}
-    \item Uses binary predictions for path planning
-    \item Goal is to move from Start to Finish during different times
-    \item Consists of 7 nodes with dynamic behavior
+    \setlength\itemsep{1em}
+  \item \textbf{Effects of Sparcity}
     \begin{itemize}
-      \item 2 Meal Nodes - three times a day
-      \item 1 Laundry Node - once per day
-      \item 2 Delivery Nodes - twice per week
-      \item 2 Trash Nodes - once every three days
+      \item Only a few hundered data points
+      \item Temporal phasing between test and training datasets
     \end{itemize}
-  \item Path planning done with NetworkX
-  \item Metrics
-  \begin{itemize}
-    \item Hard vs Soft Errors
-    \item Additional Travel Distance
-  \end{itemize}
-
+  \item \textbf{Effects of Noise}
+    \begin{itemize}
+      \item High temporal noise in hallway A
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{Congested Hallways}
-  \vspace*{-2cm}
 
 
-  \begin{figure}
-    \includegraphics[width=2.5in]{images/results/overlay.png}
-    %\caption{Layout}
-    \vspace*{-2.5cm} % remove spacing between figure and caption
-  \end{figure}
+\begin{frame}[t]{Hallway C Dataset}
+  \framesubtitle{Overall Results}
 
-  \vspace*{-.75cm} % remove spacing between figures
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{figure}
-        \includegraphics[width=1.75in]{images/results/Full_Hospital.png}
-        \vspace*{-0.3cm}
-        %\caption{Example B}
-      \end{figure}
-    \end{column}
+  \vspace*{-0.5cm}
+  \begin{table}[htp!]
+  \small
+  \begin{tabular}{|p{2.5cm}|p{1.3cm}|p{1.0cm}|p{1.7cm}|p{1.0cm}|p{1.5cm}|}
 
-    \begin{column}{0.5\textwidth}
-      \begin{figure}
-        \includegraphics[width=1.75in]{images/results/Empty_Hospital.png}
-        \vspace*{-0.3cm}
-        %\caption{Example C}
-      \end{figure}
-    \end{column}
+      \hline
+      \textbf{Model} &
+      \textbf{\% Corr.} &
+      \textbf{RMSE Corr.} &
+      \textbf{Magnitue of Inac.} &
+      \textbf{Avg. Bound} &
+      \textbf{\% Invalid} \\
+      \hline
+
+      2$\sigma$ Black Box &
+      98.88\% &
+      4.383 &
+      20.089 &
+      25.284 &
+      0.00\% \\
+      \hline
+
+      2$\sigma$ Grey Box &
+      23.60\% &
+      3.084 &
+      21.351 &
+      5.497 &
+      61.24\% \\
+      \hline
+
+      2$\sigma$ White Box &
+      82.02\% &
+      4.363 &
+      20.030 &
+      14.423 &
+      0.00\% \\
+      \hline
+
+      2$\sigma$ White X Grey Box &
+      15.73\% &
+      3.029 &
+      21.361 &
+      5.122 &
+      72.47\% \\
+      \hline
+
+      CI Black Box &
+      79.78\% &
+      1.597 &
+      20.998 &
+      7.605 &
+      0.00\% \\
+      \hline
+
+      CI Grey Box &
+      8.99\% &
+      0.589 &
+      21.387 &
+      2.410 &
+      61.24\% \\
+      \hline
+
+      CI White Box &
+      41.01\% &
+      0.735 &
+      20.844 &
+      5.383 &
+      0.00\% \\
+      \hline
+
+      CI White X Grey Box &
+      1.69\% &
+      0.119 &
+      21.376 &
+      2.504 &
+      72.47\% \\
+      \hline
+
+
+
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Hallway C Dataset - Grouping}
+  %\framesubtitle{Bounding Comparision}
+
+  \vspace*{-0.9cm}
+  \begin{columns}[t]
+    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_black_box_model_predictions_for_hallway_c_dataset.png}}
+
+    % blank space
+    \begin{overlayarea}{0.5\textwidth}{0.5\textheight}
+
+
+    \end{overlayarea}
+  \end{columns}
+  \vspace*{-0.3cm}
+
+  \begin{columns}[t]
+    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_white_box_model_predictions_for_hallway_c_dataset.png}}
   \end{columns}
 
 \end{frame}
 
 
-\begin{frame}[t]{Congested Hallways}
-  \framesubtitle{Overall Results}
+
+\begin{frame}[t]{Hallway C Dataset}
+  \framesubtitle{Invalid Predictions}
+
+  %\vspace*{-0.9cm}
+  {\includegraphics[width = 4.5in]{images/hallway/two_sigma_grey_box_model_predictions_for_hallway_c_dataset.png}}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Hallway A Dataset}
+  \framesubtitle{Abnormally Large Bounds}
 
   \vspace*{-0.5cm}
-  \begin{table}[htb!]
-    \centering
-    \resizebox{\textwidth}{!}{%
-      \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
-        Number of Hard Errors              & 1790   & 2418   & 1488   & 1488 \\ \hline
-        Number of Soft Errors              & 444    & 62     & 80     & 80   \\ \hline
-        Average Additional Cells Traversed & 5.74   & 6.34   & 3.12   & 3.12 \\ \hline
-        Total Time Spent Planning (Milliseconds)     & 3650   & 360    & 440    & 13780\\ \hline
-        Maximum Memory Usage (KB)          & 31384  & 35660  & 35588  & 38372\\ \hline
-      \end{tabular}%
-    }
-    \caption{Future Path Planning Results}
-    \label{table:Future_Path_Planning_Results}
+  \begin{table}[htp!]
+  \small
+  \begin{tabular}{|p{2.5cm}|p{1.3cm}|p{1.0cm}|p{1.7cm}|p{1.0cm}|p{1.5cm}|}
 
-    \begin{center}
-      \begin{figure}[!hp]
-        \begin{tabular}{cc}
-          {\includegraphics[width = 3.75in]{images/results/future_average_distance_from_optimal_path_during_planning.png}} \\
-        \end{tabular}
-      \end{figure}
-    \end{center}
-  \end{table}
+    \hline
+    \textbf{Model} &
+    \textbf{\% Corr.} &
+    \textbf{RMSE Corr.} &
+    \textbf{Magnitue of Inac.} &
+    \textbf{Avg. Bound} &
+    \textbf{\% Invalid} \\
+    \hline
 
-\end{frame}
+    2$\sigma$ Black Box &
+    95.79\% &
+    37.543 &
+    107.300 &
+    358.562 &
+    0.00\% \\
+    \hline
 
+    2$\sigma$ Grey Box &
+    60.39\% &
+    24.307 &
+    123.142 &
+    170.956 &
+    34.55\% \\
+    \hline
 
-\begin{frame}[t]{Congested Hallways}
-\framesubtitle{Predictions on High and Low Frequency Events}
-  \vspace*{-0.5cm}
-\begin{figure}[!Hp]
-  \begin{tabular}{cc}
-    {\includegraphics[width = 3.5in]{images/results/Future_hallway_T1_HyT-EM.png}} \\
-    {\includegraphics[width = 3.5in]{images/results/Future_hallway_M0_HyT-EM.png}} \\
-  \end{tabular}
-\end{figure}
-\end{frame}
+    2$\sigma$ White Box &
+    91.29\% &
+    29.028 &
+    107.043 &
+    338.523 &
+    0.00\% \\
+    \hline
 
+    2$\sigma$ White X Grey Box &
+    47.75\% &
+    22.175 &
+    124.168 &
+    165.829 &
+    47.47\% \\
+    \hline
 
+    CI Black Box &
+    75.28\% &
+    11.674 &
+    137.409 &
+    90.211 &
+    0.00\% \\
+    \hline
 
-\begin{frame}[t]{Busy Elevator}
-  \framesubtitle{Non-Binary Predictions}
+    CI Grey Box &
+    43.82\% &
+    9.778 &
+    138.085 &
+    66.064 &
+    34.55\% \\
+    \hline
 
-  \begin{itemize}
-    \setlength\itemsep{.3em}
-  \item Elevator wait times vary throughout the day
-  \item How far in advance should one call the elevator
-  \item Test of non-binary prediction
-  \begin{itemize}
-    \item Binary classifiers used a fixed threshold for prediction
-    \item The upper and lower averages are used for predictions
-  \end{itemize}
+    CI White Box &
+    63.48\% &
+    10.238 &
+    134.546 &
+    93.320 &
+    0.00\% \\
+    \hline
 
-  \begin{figure}[!htb]
-    \centering
-    \includegraphics[width=\linewidth]{images/Elevator_Data_Example_Month.png}
-  \end{figure}
-
-  \end{itemize}
-\end{frame}
-
-
-
-\begin{frame}[t]{Busy Elevator}
- % \framesubtitle{Results}
-
-
-
-  %\begin{figure}[!Hp]
-  %  \begin{tabular}{cc}
-  %    {\includegraphics[width = 4.5in]{images/results/Future_Predictions_on_Elevator_Data.png}}
-  %    {\includegraphics[width = 3in]{images/results/Future_elevator_FreMEn.png}}
-  %    {\includegraphics[width = 3in]{images/results/Future_elevator_HyT-EM.png}}
-  %  \end{tabular}
-  %\end{figure}
-
-
-  \vspace*{-.75cm}
+    CI White X Grey Box &
+    33.15\% &
+    10.663 &
+    136.725 &
+    69.403 &
+    47.47\% \\
+    \hline
 
 
-\begin{table}[h!]
-  \centering
-  \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|l|l|l|}
-      \hline
-      & DMM & Gaussian & FreMEn  & Hypertime \\ \hline
-      Average Additional Wait Time (Seconds)         & 3.06    & 3.25     & 2.12    & 1.92      \\ \hline
-      Computation Time (Milliseconds)                       & 610     & 60       & 70      & 7690      \\ \hline
-      Memory Usage (KB)                                     & 31092   & 34636    & 34672   & 67788     \\ \hline
-    \end{tabular}%
-  }
-  \caption{Elevator Wait Time Overview}
-  \label{table:Elevator_Wait_Time_Overview}
+
+\end{tabular}
 \end{table}
 
-
-  \begin{figure}
-    \vspace*{-1cm}
-    \hspace*{-1cm}
-    {\includegraphics[width = 5in]{images/results/Future_Predictions_on_Elevator_Data.png}}
-    %\caption{Layout}
-  \end{figure}
-
 \end{frame}
 
 
-\begin{frame}[t]{Busy Elevator}
- \framesubtitle{Binary vs Non-Binary Predictions}
 
- \vspace*{-1.6cm}
- \hspace*{-1.0cm}
-  \begin{figure}[!Hp]
-    \begin{tabular}{cc}
-      {\includegraphics[width = 4.25in]{images/results/Future_elevator_FreMEn.png}} \\
-      {\includegraphics[width = 4.25in]{images/results/Future_elevator_HyT-EM.png}}
-    \end{tabular}
-  \end{figure}
 
-\end{frame}
 
 
 
@@ -939,16 +994,18 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 
   \begin{itemize}
   \setlength\itemsep{1.25em}
-    \item \textbf{Confidence Intervals}
+    \item \textbf{Confidence Interval Variant}
       \begin{itemize}
         \item Describes general trend of behaviors
         \item Smaller bounds at the cost of accuracy
+        \item More resistant to noise
         \item Best fit for models representing discrete changes
       \end{itemize}
 
     \item \textbf{Two Sigma}
       \begin{itemize}
         \item Larger more accurate bounds
+        \item Susceptable to noise
         \item Better encapsulation of environmental variance
       \end{itemize}
 
@@ -1032,32 +1089,53 @@ Supervisiors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Bibliography}
-  \begin{thebibliography}{9}
+  \begin{thebibliography}{8}
     \bibitem{Krajnik2015}
-        \emph{FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments}
-        T. Krajník, J. Fentanes, J. Santos, \& T. Duckett,
-        ICRA Workshop on Visual Place Recognition in Changing Environments
-        2015
-      \bibitem{Krajnik2018}
-        \emph{Warped Hypertime Representations for Long-term Autonomy of Mobile Robots},
-        T. Krajnik, T. Vintr, S. Molina, J.P. Fentanes, G. Cielniak, \& T. Duckett,
-        2018
-      \bibitem{Massey2019}
-        \emph{Comparative Analysis of Techniques for Spatio-Temporal World Modeling},
-        E.O. Massey, E. Prassler, A.O. S{\'{a}}inz, \& S. Blumenthal,
-        2019
-      \bibitem{Confidence2019}
-        \emph{Oxford University Press (OUP)},
-        Lexico.com,
-        2019
-      \bibitem{Geifman2018}
-        \emph{Bias-Reduced Uncertainty Estimation for Deep Neural Classifiers},
-        Y. Geifman, G. Uziel, R. El-Yaniv,
-        2018
-      \bibitem{Shrestha2006}
-        \emph{Machine learning approaches for estimation of prediction interval for the model output},
-        D.L. Shrestha, D.P. Solomatine,
-        2006
+      \emph{FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments}
+      T. Krajník, J. Fentanes, J. Santos, \& T. Duckett,
+      ICRA Workshop on Visual Place Recognition in Changing Environments,
+      2015
+
+    \bibitem{strands2017}
+      \emph{The STRANDS Project: Long-Term Autonomy in Everyday Environments}
+      N. Hawes, et. al,
+      IEEE Robotics and Automation Magazine,
+      2017
+
+    \bibitem{dream2019}
+      \emph{Dream:  An algorithm for mitigating the overhead of robust rescheduling}
+      J.R. Abrahams, D.A. Chu, G. Diehl, M. Knittel, J. Lin, W. Lloyd, J.C Boerkoel, \& F. Jeremy,
+      Proceedings of the International Conference on Automated Planning and Scheduling,
+      2019
+
+    \bibitem{Krajnik2018}
+      \emph{Warped Hypertime Representations for Long-term Autonomy of Mobile Robots},
+      T. Krajnik, T. Vintr, S. Molina, J.P. Fentanes, G. Cielniak, \& T. Duckett,
+      http://arxiv.org/abs/1810.04285,
+      2018
+
+    \bibitem{Massey2019}
+      \emph{Comparative Analysis of Techniques for Spatio-Temporal World Modeling},
+      E.O. Massey, E. Prassler, A.O. S{\'{a}}inz, \& S. Blumenthal,
+      Hochschule Bonn-Rhein-Sieg,
+      2019
+
+    \bibitem{Confidence2019}
+      \emph{Oxford University Press (OUP)},
+      Lexico.com,
+      2019
+
+    \bibitem{Geifman2018}
+      \emph{Bias-Reduced Uncertainty Estimation for Deep Neural Classifiers},
+      Y. Geifman, G. Uziel, R. El-Yaniv,
+      arXiv preprint arXiv:1805.08206,
+      2018
+
+    \bibitem{Shrestha2006}
+      \emph{Machine learning approaches for estimation of prediction interval for the model output},
+      D.L. Shrestha, D.P. Solomatine,
+      Neural Networks,
+      2006
 
   \end{thebibliography}
 \end{frame}
