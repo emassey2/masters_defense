@@ -38,11 +38,12 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 \end{frame}
 }
 
-\begin{frame}[t]{Uses of Spatio-Temporal Models}
+\begin{frame}[t]{Spatio-Temporal Models}
+  %\framesubtitle{Overview and Use}
   \begin{itemize}
     \setlength\itemsep{1em}
     \item Describes how an environment changes with respect to time
-    \item Most useful when changes are periodic or modelable
+    \item Most useful when changes are periodic
     \item Human occupied environments are often suitable
     \item Enable improved planning, navigation, and scheduling for ROPOD
   \end{itemize}
@@ -61,28 +62,33 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
 
 
-\begin{frame}[t]{State-of-the-Art}
+\begin{frame}[t]{Limitations \& the State-of-the-Art}
+  \framesubtitle{Lack of Confidence}
 
   \begin{itemize}
-  \setlength\itemsep{1.5em}
+  \setlength\itemsep{1.0em}
+    \item \textbf{Lack of Confidence}
+      \begin{itemize}
+        %\setlength\itemsep{1em}
+        \item Most models only provide singular values
+        \item Uncertainty surrounds every prediction
+      \end{itemize}
+
     \item \textbf{(Binary) State Probability Estimation}
       \begin{itemize}
         \item \scriptsize FreMEn: Frequency Map Enhancement for Long-Term Mobile Robot Autonomy in Changing Environments \cite{Krajnik2015}
         \item \scriptsize Variants of Hypertime \cite{Krajnik2018} \normalsize
+        \item cannot provide bounds for travel time or similar estimates
       \end{itemize}
 
-    \item \textbf{Possible Applications}
-      \begin{itemize}
-        \item Directed \& Informed Exploration \cite{strands2017}
-        \item Temporal Planning \cite{dream2019}
-      \end{itemize}
   \end{itemize}
 
-  \vspace*{0.50cm}
-  \begin{block}{Limitations}
+  %\vspace*{0.50cm}
+  \begin{block}{\textbf{Benefits of Bounded Predictions}}
     \begin{itemize}
-      \item Many spatio-temporal models but few can estimate confidence
-      \item FreMEn only cannot provide travel time or similar estimates
+      \item Known best and worst case scenarios
+      \item Temporal Planning \cite{dream2019}
+      \item Directed \& Informed Exploration \cite{strands2017}
     \end{itemize}
   \end{block}
 
@@ -94,105 +100,126 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
   \framesubtitle{What \emph{is} Confidence?}
 
   \begin{itemize}
+    \setlength\itemsep{0.75em}
     \item “The feeling or belief that one can have faith in or rely on someone or something.” \cite{Confidence2019}
-    \item Epistemic vs Aleatoric uncertainty
-    \item Inherent vs Introduced
-    \item Predicated on data quantity and quality
-  \end{itemize}
+    \item Relies on historical knowledge/experience
+    \item Confidence predicated on data quantity and quality
+    \item Confidence $\simeq$ Uncertainty \cite{Geifman2018}
+    \item Past experiences can be used to predict future behaviors
+    %\item Inherent vs Introduced
+    %\item Driven by knowledge of spatio-temporal implementation
+    %\item Epistemic vs Aleatoric uncertainty
+  %\end{itemize}
 
-  \begin{block}{Key Concepts for this Work}
-    \begin{itemize}
-      \item Confidence $\simeq$ Uncertainty \cite{Geifman2018}
-      \item Relies on historical knowledge/experience
-      \item Driven by knowledge of spatio-temporal implementation
+ % \vspace*{1.00cm}
+ % \begin{block}{Key Concepts for this Work}
+ %   \begin{itemize}
     \end{itemize}
-  \end{block}
+ % \end{block}
 
 \end{frame}
 
 
 
-\begin{frame}[t]{Methodology}
-  \framesubtitle{Conceptual Approach to Confidence Estimation Models}
+\begin{frame}[t]{Confidence Estimation Models}
+  \framesubtitle{Bounds Through Error Modeling }
   \begin{itemize}
-    \setlength\itemsep{1em}
-  \item \textbf{Black Box}
-      \begin{itemize}
-        \item No assumptions possible
-        \item Wide-reaching application
-        \item Simplistic approach and results
-      \end{itemize}
 
-    \item \textbf{Grey Box}
-      \begin{itemize}
-        \item Some implementation knowledge needed
-        \item Wide range of possible designs
-        \item May require tuning
-      \end{itemize}
-
-    \item \textbf{White Box}
-      \begin{itemize}
-        \item Internal access and comprehension required
-        \item Extremely specific
-        \item Possibility for most precise and accurate results
-      \end{itemize}
+      \setlength\itemsep{1em}
+      \item Analyze error for each training data point
+      \item Error is the distance from predicted to observed
+      \item Divided into over and under predictions
+      \item Further divided according to data grouping techniques
+      \item Groups of error are analyzed to provide bounds
+      \item Future predictions are determined by looking up the bounds given
+            by the group to which the future prediction belongs
 
   \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}[t]{Implementation Details}
-  \framesubtitle{Use Case - ROPOD}
-  \begin{columns}[t]
+%\begin{frame}[t]{Confidence Through Data Grouping}
+%  \framesubtitle{Conceptual Approach to Confidence Estimation Models}
+%  \begin{itemize}
+%    \setlength\itemsep{1em}
+%  \item \textbf{Black Box}
+%      \begin{itemize}
+%        \item No assumptions possible
+%        \item Wide-reaching application
+%        \item Simplistic approach and results
+%      \end{itemize}
+%
+%    \item \textbf{Grey Box}
+%      \begin{itemize}
+%        \item Some implementation knowledge needed
+%        \item Wide range of possible designs
+%        \item May require tuning
+%      \end{itemize}
+%
+%    \item \textbf{White Box}
+%      \begin{itemize}
+%        \item Internal access and comprehension required
+%        \item Extremely specific
+%        \item Possibility for most precise and accurate results
+%      \end{itemize}
+%
+%  \end{itemize}
+%\end{frame}
 
-    \column{.5\textwidth}
-    \begin{block}{What is ROPOD?}
-      \begin{itemize}
-        \item Autonomous multi-robot system
-        \item Transports hospital beds \& supplies
-        \item Deployment in human-shared environments
-      \end{itemize}
-    \end{block}
-
-    \column{.5\textwidth}
-    \begin{block}{Why ROPOD?}
-      \begin{itemize}
-        \item Real-world context
-        \item Extensive opportunity for data collection
-        \item Environmental representation
-        \item Potential synergy with temporal planning
-      \end{itemize}
-    \end{block}
-  \end{columns}
-\end{frame}
 
 
+%\begin{frame}[t]{Implementation Details}
+%  \framesubtitle{Use Case - ROPOD}
+%  \begin{columns}[t]
+%
+%    \column{.5\textwidth}
+%    \begin{block}{What is ROPOD?}
+%      \begin{itemize}
+%        \item Autonomous multi-robot system
+%        \item Transports hospital beds \& supplies
+%        \item Deployment in human-shared environments
+%      \end{itemize}
+%    \end{block}
+%
+%    \column{.5\textwidth}
+%    \begin{block}{Why ROPOD?}
+%      \begin{itemize}
+%        \item Real-world context
+%        \item Extensive opportunity for data collection
+%        \item Environmental representation
+%        \item Potential synergy with temporal planning
+%      \end{itemize}
+%    \end{block}
+%  \end{columns}
+%\end{frame}
 
-\begin{frame}[t]{Implementation Details}
-  \framesubtitle{Spatio-Temporal Model - Hypertime \cite{Krajnik2018}}
-  \begin{columns}[t]
 
-    \column{.5\textwidth}
-    \begin{block}{What is Hypertime?}
-      \begin{itemize}
-        \item Extension of FreMEn \cite{Krajnik2015}
-        \item Predicts environmental behavior or changes
-        \item Binary predictions with probability
-        \item Non-binary predictions with no probability
-      \end{itemize}
-    \end{block}
 
-    \column{.5\textwidth}
-    \begin{block}{Why Hypertime?}
-      \begin{itemize}
-        \item Excellent fit for ROPOD \cite{Massey2019}
-        \item Fully accessible and comprehensible
-        \item Lacks confidence estimates
-      \end{itemize}
-    \end{block}
-  \end{columns}
-\end{frame}
+%\begin{frame}[t]{Implementation Details}
+%  \framesubtitle{Spatio-Temporal Model - Hypertime \cite{Krajnik2018}}
+%  \begin{columns}[t]
+%
+%    \column{.5\textwidth}
+%    \begin{block}{What is Hypertime?}
+%      \begin{itemize}
+%        \item Extension of FreMEn \cite{Krajnik2015}
+%        \item Predicts environmental behavior or changes
+%        \item Binary predictions with probability
+%        \item Non-binary predictions with no probability
+%      \end{itemize}
+%    \end{block}
+%
+%    \column{.5\textwidth}
+%    \begin{block}{Why Hypertime?}
+%      \begin{itemize}
+%        \item Excellent fit for ROPOD \cite{Massey2019}
+%        \item Fully accessible and comprehensible
+%        \item Lacks confidence estimates
+%      \end{itemize}
+%    \end{block}
+%  \end{columns}
+%\end{frame}
 
 
 
@@ -243,22 +270,6 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
   \end{itemize}
 \end{frame}
 
-
-
-
-\begin{frame}[t]{Confidence Estimation Models}
-  \framesubtitle{Bounds Through Error Modeling }
-  \begin{itemize}
-
-      \setlength\itemsep{1em}
-      \item Bounds provided by analyzing the model error during training
-      \item Error is the distance from observed to predicted
-      \item Divided into over and under predictions
-      \item Further divided according to data grouping techniques
-      \item Groups of error are analyzed to provide bounds
-
-  \end{itemize}
-\end{frame}
 
 
 
@@ -336,60 +347,60 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
 
 
-\begin{frame}[t]{Hypertime Parameter Selection}
-  \framesubtitle{Determining the Optimal Parameters}
-  \begin{itemize}
-    \setlength\itemsep{1em}
-
-  \item \textbf{Number of Clusters}
-    \begin{itemize}
-      \item 1-5
-    \end{itemize}
-  \item \textbf{Clustering Method}
-    \begin{itemize}
-      \item Mean
-      \item Sample Mean
-      \item Sample Mode
-    \end{itemize}
-  \item \textbf{Maximum Period}
-    \begin{itemize}
-      \item One Day
-      \item One Week
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-
-
-\begin{frame}[t]{Hypertime Parameter Selection}
-
-  \begin{columns}[t]
-    \column{.5\textwidth}
-    {\includegraphics[width=2.3in]{images/Average_RMSE_for_Max_Periods.png}}
-
-    \column{.5\textwidth}
-    {\includegraphics[width=2.3in]{images/Average_RMSE_for_Prediction_Methods.png}}
-  \end{columns}
-
-\end{frame}
-
-
-
-\begin{frame}[t]{Hypertime Parameter Selection}
-    \centering
-    \vspace*{-0.25cm}
-    {\includegraphics[width = 3.6in]{images/varying_clusters.png}}
-    \vspace*{-0.45cm}
-
-  \begin{block}{Selected Parameters}
-    \begin{itemize}
-      \item Number of Clusters - \textbf{5}
-      \item Clustering Method - \textbf{Mean}
-      \item Maximum Period - \textbf{One Week}
-    \end{itemize}
-  \end{block}
-
-\end{frame}
+%\begin{frame}[t]{Hypertime Parameter Selection}
+%  \framesubtitle{Determining the Optimal Parameters}
+%  \begin{itemize}
+%    \setlength\itemsep{1em}
+%
+%  \item \textbf{Number of Clusters}
+%    \begin{itemize}
+%      \item 1-5
+%    \end{itemize}
+%  \item \textbf{Prediction Method}
+%    \begin{itemize}
+%      \item Mean
+%      \item Sample Mean
+%      \item Sample Mode
+%    \end{itemize}
+%  \item \textbf{Maximum Period}
+%    \begin{itemize}
+%      \item One Day
+%      \item One Week
+%    \end{itemize}
+%  \end{itemize}
+%\end{frame}
+%
+%
+%
+%\begin{frame}[t]{Hypertime Parameter Selection}
+%
+%  \begin{columns}[t]
+%    \column{.5\textwidth}
+%    {\includegraphics[width=2.3in]{images/Average_RMSE_for_Max_Periods.png}}
+%
+%    \column{.5\textwidth}
+%    {\includegraphics[width=2.3in]{images/Average_RMSE_for_Prediction_Methods.png}}
+%  \end{columns}
+%
+%\end{frame}
+%
+%
+%
+%\begin{frame}[t]{Hypertime Parameter Selection}
+%    \centering
+%    \vspace*{-0.25cm}
+%    {\includegraphics[width = 3.6in]{images/varying_clusters.png}}
+%    \vspace*{-0.45cm}
+%
+%  \begin{block}{Selected Parameters}
+%    \begin{itemize}
+%      \item Prediction Method - \textbf{Mean}
+%      \item Maximum Period - \textbf{One Week}
+%      \item Number of Clusters - \textbf{5}
+%    \end{itemize}
+%  \end{block}
+%
+%\end{frame}
 
 
 
@@ -410,7 +421,7 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
       \item Confidence Interal
       \item Two Sigma
     \end{itemize}
-  \item \textbf{Effects of Sparsity}
+  %\item \textbf{Effects of Sparsity}
   \end{itemize}
 \end{frame}
 
@@ -560,102 +571,102 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
 
 
-\begin{frame}[t]{Sparse Elevator Dataset}
-  \framesubtitle{Overall Results}
-
-  \vspace*{-0.5cm}
-  \begin{table}[htp!]
-  \small
-  \begin{tabular}{|p{2.5cm}|p{1.3cm}|p{1.0cm}|p{1.7cm}|p{1.0cm}|p{1.5cm}|}
-
-    \hline
-    \textbf{Model} &
-    \textbf{\% Corr.} &
-    \textbf{RMSE Corr.} &
-    \textbf{Magnitude of Inac.} &
-    \textbf{Avg. Bound} &
-    \textbf{\% Invalid} \\
-    \hline
-
-    2$\sigma$ Black Box &
-    93.88\% &
-    1.131 &
-    0.511 &
-    6.347 &
-    0.00\% \\
-    \hline
-
-    2$\sigma$ Grey Box &
-    64.38\% &
-    0.808 &
-    0.913 &
-    2.988 &
-    17.36\% \\
-    \hline
-
-    2$\sigma$ White Box &
-    89.51\% &
-    1.165 &
-    0.404 &
-    5.346 &
-    0.00\% \\
-    \hline
-
-    2$\sigma$ White X Grey Box &
-    41.70\% &
-    0.603 &
-    1.201 &
-    1.531 &
-    52.99\% \\
-    \hline
-
-    CI Black Box &
-    63.05\% &
-    0.511 &
-    0.974 &
-    2.405 &
-    0.00\% \\
-    \hline
-
-    CI Grey Box &
-    52.70\% &
-    0.627 &
-    0.997 &
-    2.212 &
-    17.36\% \\
-    \hline
-
-    CI White Box &
-    65.35\% &
-    0.674 &
-    0.756 &
-    2.757 &
-    0.00\% \\
-    \hline
-
-    CI White X Grey Box &
-    37.99\% &
-    0.555 &
-    1.212 &
-    1.353 &
-    52.99\% \\
-    \hline
-
-
-\end{tabular}
-\end{table}
-
-\end{frame}
-
-
-
-\begin{frame}[t]{Sparse Elevator Dataset}
-  \framesubtitle{Invalid Predictions}
-
-  %\vspace*{-0.9cm}
-  {\includegraphics[width = 4.5in]{images/elevator/two_sigma_grey_box_model_predictions_for_sparse_elevator_dataset.png}}
-
-\end{frame}
+%\begin{frame}[t]{Sparse Elevator Dataset}
+%  \framesubtitle{Overall Results}
+%
+%  \vspace*{-0.5cm}
+%  \begin{table}[htp!]
+%  \small
+%  \begin{tabular}{|p{2.5cm}|p{1.3cm}|p{1.0cm}|p{1.7cm}|p{1.0cm}|p{1.5cm}|}
+%
+%    \hline
+%    \textbf{Model} &
+%    \textbf{\% Corr.} &
+%    \textbf{RMSE Corr.} &
+%    \textbf{Magnitude of Inac.} &
+%    \textbf{Avg. Bound} &
+%    \textbf{\% Invalid} \\
+%    \hline
+%
+%    2$\sigma$ Black Box &
+%    93.88\% &
+%    1.131 &
+%    0.511 &
+%    6.347 &
+%    0.00\% \\
+%    \hline
+%
+%    2$\sigma$ Grey Box &
+%    64.38\% &
+%    0.808 &
+%    0.913 &
+%    2.988 &
+%    17.36\% \\
+%    \hline
+%
+%    2$\sigma$ White Box &
+%    89.51\% &
+%    1.165 &
+%    0.404 &
+%    5.346 &
+%    0.00\% \\
+%    \hline
+%
+%    2$\sigma$ White X Grey Box &
+%    41.70\% &
+%    0.603 &
+%    1.201 &
+%    1.531 &
+%    52.99\% \\
+%    \hline
+%
+%    CI Black Box &
+%    63.05\% &
+%    0.511 &
+%    0.974 &
+%    2.405 &
+%    0.00\% \\
+%    \hline
+%
+%    CI Grey Box &
+%    52.70\% &
+%    0.627 &
+%    0.997 &
+%    2.212 &
+%    17.36\% \\
+%    \hline
+%
+%    CI White Box &
+%    65.35\% &
+%    0.674 &
+%    0.756 &
+%    2.757 &
+%    0.00\% \\
+%    \hline
+%
+%    CI White X Grey Box &
+%    37.99\% &
+%    0.555 &
+%    1.212 &
+%    1.353 &
+%    52.99\% \\
+%    \hline
+%
+%
+%\end{tabular}
+%\end{table}
+%
+%\end{frame}
+%
+%
+%
+%\begin{frame}[t]{Sparse Elevator Dataset}
+%  \framesubtitle{Invalid Predictions}
+%
+%  %\vspace*{-0.9cm}
+%  {\includegraphics[width = 4.5in]{images/elevator/two_sigma_grey_box_model_predictions_for_sparse_elevator_dataset.png}}
+%
+%\end{frame}
 
 
 
@@ -790,26 +801,26 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
 
 
-\begin{frame}[t]{Hallway C Dataset - Grouping}
-  %\framesubtitle{Bounding Comparision}
-
-  \vspace*{-0.9cm}
-  \begin{columns}[t]
-    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_black_box_model_predictions_for_hallway_c_dataset.png}}
-
-    % blank space
-    \begin{overlayarea}{0.5\textwidth}{0.5\textheight}
-
-
-    \end{overlayarea}
-  \end{columns}
-  \vspace*{-0.3cm}
-
-  \begin{columns}[t]
-    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_white_box_model_predictions_for_hallway_c_dataset.png}}
-  \end{columns}
-
-\end{frame}
+%\begin{frame}[t]{Hallway C Dataset - Grouping}
+%  %\framesubtitle{Bounding Comparision}
+%
+%  \vspace*{-0.9cm}
+%  \begin{columns}[t]
+%    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_black_box_model_predictions_for_hallway_c_dataset.png}}
+%
+%    % blank space
+%    \begin{overlayarea}{0.5\textwidth}{0.5\textheight}
+%
+%
+%    \end{overlayarea}
+%  \end{columns}
+%  \vspace*{-0.3cm}
+%
+%  \begin{columns}[t]
+%    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_white_box_model_predictions_for_hallway_c_dataset.png}}
+%  \end{columns}
+%
+%\end{frame}
 
 
 
@@ -919,12 +930,9 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
   \begin{itemize}
     \setlength\itemsep{1em}
+  \item \textbf{Uses the Sparse Elevator Dataset}
+  \item \textbf{Combine models strength while avoiding shortcomings}
 
-  \item \textbf{Ideas Being Explored}
-    \begin{itemize}
-      \item Combine models strength while avoiding shortcommings
-      \item Uses the Sparse Elevator Dataset
-    \end{itemize}
   \vspace*{0.50cm}
 
   \item \textbf{Methods for Combining Predictions}
@@ -1134,7 +1142,7 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
 
 \begin{frame}[t]{Experiment Conclusions}
-  \framesubtitle{Confidence Estimating Techniques}
+  \framesubtitle{Bounding Techniques}
   \vspace*{+.25cm}
 
   \begin{itemize}
@@ -1158,35 +1166,6 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 \end{frame}
 
 
-\begin{frame}[t]{Recommendations for ROPOD}
-
-  \begin{itemize}
-  \setlength\itemsep{1.00em}
-    \item \textbf{Data Grouping - White Box/Hypertime Clusters}
-      \begin{itemize}
-        \item Avoids issues related to small datasets
-        \item Groups and generalizes underlying behaviors well
-        \item Multi-model fusion of also of potential interest
-      \end{itemize}
-
-    \item \textbf{Confidence Estimates - 2$\sigma$}
-      \begin{itemize}
-        \item Best for generalizing dynamic range of behaviors
-      \end{itemize}
-
-    \item \textbf{Implementation}
-      \begin{itemize}
-        \item Collect data as often as possible
-        \item Storage of spatio-temporal data on central server
-        \item Docker container of quick deployment
-        \item Trainings overnight every week or so
-      \end{itemize}
-
-  \end{itemize}
-
-\end{frame}
-
-
 \begin{frame}[t]{Contributions}
 
   \begin{itemize}
@@ -1199,7 +1178,11 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 
         \item Designed and evaluated multiple confidence estimation for Hypertime
 
+        \item Created tools to visualize confidence estimates
+
         \item Demonstrated multi-model prediction fusion
+
+        \item Provided implementation specific recommendations for ROPOD
 
   \end{itemize}
 
@@ -1284,6 +1267,221 @@ Supervisors: \\ Prof. Dr. Erwin Prassler  \\ Prof. Dr. Paul G. Pl\"{o}ger \\ M. 
 \end{frame}
 
 
+
+
+
+
+
+\begin{frame}[t]{Confidence Through Data Grouping}
+  \framesubtitle{Conceptual Approach to Confidence Estimation Models}
+  \begin{itemize}
+    \setlength\itemsep{1em}
+  \item \textbf{Black Box}
+      \begin{itemize}
+        \item No assumptions possible
+        \item Wide-reaching application
+        \item Simplistic approach and results
+      \end{itemize}
+
+    \item \textbf{Grey Box}
+      \begin{itemize}
+        \item Some implementation knowledge needed
+        \item Wide range of possible designs
+        \item May require tuning
+      \end{itemize}
+
+    \item \textbf{White Box}
+      \begin{itemize}
+        \item Internal access and comprehension required
+        \item Extremely specific
+        \item Possibility for most precise and accurate results
+      \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t]{Implementation Details}
+  \framesubtitle{Use Case - ROPOD}
+  \begin{columns}[t]
+
+    \column{.5\textwidth}
+    \begin{block}{What is ROPOD?}
+      \begin{itemize}
+        \item Autonomous multi-robot system
+        \item Transports hospital beds \& supplies
+        \item Deployment in human-shared environments
+      \end{itemize}
+    \end{block}
+
+    \column{.5\textwidth}
+    \begin{block}{Why ROPOD?}
+      \begin{itemize}
+        \item Real-world context
+        \item Extensive opportunity for data collection
+        \item Environmental representation
+        \item Potential synergy with temporal planning
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[t]{Implementation Details}
+  \framesubtitle{Spatio-Temporal Model - Hypertime \cite{Krajnik2018}}
+  \begin{columns}[t]
+
+    \column{.5\textwidth}
+    \begin{block}{What is Hypertime?}
+      \begin{itemize}
+        \item Extension of FreMEn \cite{Krajnik2015}
+        \item Predicts environmental behavior or changes
+        \item Binary predictions with probability
+        \item Non-binary predictions with no probability
+      \end{itemize}
+    \end{block}
+
+    \column{.5\textwidth}
+    \begin{block}{Why Hypertime?}
+      \begin{itemize}
+        \item Excellent fit for ROPOD \cite{Massey2019}
+        \item Fully accessible and comprehensible
+        \item Lacks confidence estimates
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Hypertime Parameter Selection}
+  \framesubtitle{Determining the Optimal Parameters}
+  \begin{itemize}
+    \setlength\itemsep{1em}
+
+  \item \textbf{Number of Clusters}
+    \begin{itemize}
+      \item 1-5
+    \end{itemize}
+  \item \textbf{Prediction Method}
+    \begin{itemize}
+      \item Mean
+      \item Sample Mean
+      \item Sample Mode
+    \end{itemize}
+  \item \textbf{Maximum Period}
+    \begin{itemize}
+      \item One Day
+      \item One Week
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t]{Hypertime Parameter Selection}
+
+  \begin{columns}[t]
+    \column{.5\textwidth}
+    {\includegraphics[width=2.3in]{images/Average_RMSE_for_Max_Periods.png}}
+
+    \column{.5\textwidth}
+    {\includegraphics[width=2.3in]{images/Average_RMSE_for_Prediction_Methods.png}}
+  \end{columns}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Hypertime Parameter Selection}
+    \centering
+    \vspace*{-0.25cm}
+    {\includegraphics[width = 3.6in]{images/varying_clusters.png}}
+    \vspace*{-0.45cm}
+
+  \begin{block}{Selected Parameters}
+    \begin{itemize}
+      \item Prediction Method - \textbf{Mean}
+      \item Maximum Period - \textbf{One Week}
+      \item Number of Clusters - \textbf{5}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Hallway Dataset}
+  \framesubtitle{Predicting Travel Time}
+  \centering
+  %\vspace*{-0.33cm}
+  \includegraphics[width=4.0cm]{images/ROPOD_nodes.png}
+  %\vspace*{-0.20cm}
+
+  \begin{block}{Key Properties}
+    \begin{itemize}
+      \item Limited Volume
+      \item Noisy Data
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Hallway C Dataset - Grouping}
+  %\framesubtitle{Bounding Comparision}
+
+  \vspace*{-0.9cm}
+  \begin{columns}[t]
+    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_black_box_model_predictions_for_hallway_c_dataset.png}}
+
+    % blank space
+    \begin{overlayarea}{0.5\textwidth}{0.5\textheight}
+
+
+    \end{overlayarea}
+  \end{columns}
+  \vspace*{-0.3cm}
+
+  \begin{columns}[t]
+    {\includegraphics[width = 2.8in]{images/hallway/two_sigma_white_box_model_predictions_for_hallway_c_dataset.png}}
+  \end{columns}
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Recommendations for ROPOD}
+
+  \begin{itemize}
+  \setlength\itemsep{1.00em}
+    \item \textbf{Data Grouping - White Box/Hypertime Clusters}
+      \begin{itemize}
+        \item Avoids issues related to small datasets
+        \item Groups and generalizes underlying behaviors well
+        \item Multi-model fusion of also of potential interest
+      \end{itemize}
+
+    \item \textbf{Confidence Estimates - 2$\sigma$}
+      \begin{itemize}
+        \item Best for generalizing dynamic range of behaviors
+      \end{itemize}
+
+    \item \textbf{Implementation}
+      \begin{itemize}
+        \item Collect data as often as possible
+        \item Storage of spatio-temporal data on central server
+        \item Docker container of quick deployment
+        \item Trainings overnight every week or so
+      \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
 
 
 \end{document}
